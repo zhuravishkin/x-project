@@ -1,11 +1,11 @@
-package com.zhuravishkin.x_project
+package com.zhuravishkin.core.core_http_client_ntlm
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
 @SpringBootApplication
-class XProjectApplication
+class CoreHttpClientNtlmApplication
 
 fun main(args: Array<String>) {
-    runApplication<XProjectApplication>(*args)
+    runApplication<CoreHttpClientNtlmApplication>(*args)
 }
