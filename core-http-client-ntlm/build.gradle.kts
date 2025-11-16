@@ -1,3 +1,5 @@
+import io.gitlab.arturbosch.detekt.Detekt
+
 plugins {
     kotlin("jvm")
     kotlin("plugin.spring")
@@ -46,6 +48,25 @@ allOpen {
     annotation("jakarta.persistence.Entity")
     annotation("jakarta.persistence.MappedSuperclass")
     annotation("jakarta.persistence.Embeddable")
+}
+
+detekt {
+    config.setFrom(
+        files(
+            "$rootDir/detekt-config.yml",
+            "$projectDir/detekt-config.yml"
+        )
+    )
+    buildUponDefaultConfig = true
+    parallel = true
+
+    tasks.withType<Detekt>().configureEach {
+        reports {
+            html.required.set(true)
+            xml.required.set(false)
+            txt.required.set(false)
+        }
+    }
 }
 
 tasks.withType<Test> {
