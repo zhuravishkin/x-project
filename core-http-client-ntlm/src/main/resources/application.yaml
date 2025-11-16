@@ -1,3 +1,40 @@
 spring:
   application:
     name: core-http-client-ntlm
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    driver-class-name: org.postgresql.Driver
+    username: user
+    password: password
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    locations: classpath:db/migration
+    schemas: cep
+x:
+  client:
+    url: ${EXTERNAL_SERVICE_URL:http://localhost:8080}
+    username: ${HTTP_CLIENT_USERNAME:user}
+    password: ${HTTP_CLIENT_PASSWORD:password}
+    path: ${HTTP_CLIENT_DOMAIN:/process}
+    connect-timeout-seconds: 30
+    read-timeout: 20
+  scheduler:
+    spca:
+      cron: ${SCHEDULER_CRON:30 * * * * *}
+logging:
+  level:
+    root: INFO
+    com.zhuravishkin.core: DEBUG
+    org.springframework.scheduling: DEBUG
+    net.javacrumbs.shedlock: DEBUG
+server:
+  port: 8081

@@ -1,0 +1,16 @@
+### POST without NTLM (401 UNAUTHORIZED)
+POST http://localhost:8080/process
+Content-Type: application/json
+
+{
+  "hello": "world"
+}
+
+### NTLM POST ok
+POST http://localhost:8080/process
+Content-Type: application/json
+Authorization: NTLM TlRMTVNTUAABAAAAB4IIogAAAAAAAAAAAAAAAAAAAAAFASgKAAAADw==
+
+{
+  "hello": "world"
+}

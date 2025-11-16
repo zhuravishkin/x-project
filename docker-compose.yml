@@ -1,0 +1,35 @@
+version: '3.9'
+
+services:
+  postgres:
+    image: postgres:18
+    container_name: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql
+    networks:
+      - demo_network
+
+  ntlm_server:
+    build: ./ntlm-server
+    container_name: ntlm_server
+    restart: always
+    ports:
+      - "8080:3000"
+    volumes:
+      - ntlm_server_data:/var/lib/ntlm_server
+    networks:
+      - demo_network
+
+volumes:
+  postgres_data:
+  ntlm_server_data:
+
+networks:
+  demo_network:
