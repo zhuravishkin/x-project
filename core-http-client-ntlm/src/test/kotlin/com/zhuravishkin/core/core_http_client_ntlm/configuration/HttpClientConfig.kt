@@ -2,35 +2,23 @@ package com.zhuravishkin.core.core_http_client_ntlm.configuration
 
 import com.zhuravishkin.core.core_http_client_ntlm.configuration.properties.HttpClientProperties
 import org.apache.http.HttpHost
-import org.apache.http.auth.AuthScope
-import org.apache.http.auth.NTCredentials
 import org.apache.http.client.CredentialsProvider
 import org.apache.http.client.config.RequestConfig
 import org.apache.http.client.protocol.HttpClientContext
 import org.apache.http.impl.client.BasicCredentialsProvider
 import org.apache.http.impl.client.CloseableHttpClient
 import org.apache.http.impl.client.HttpClientBuilder
-import org.slf4j.LoggerFactory
+import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean
-import org.springframework.context.annotation.Configuration
-import org.springframework.context.annotation.Profile
 import java.net.URI
 
-@Configuration
-@Profile("!test")
-class NtlmHttpClientConfig(
+@TestConfiguration
+class HttpClientConfig(
     private val httpClientProperties: HttpClientProperties
 ) {
-    private val logger = LoggerFactory.getLogger(javaClass)
-
     @Bean
     fun credentialsProvider(): CredentialsProvider =
-        BasicCredentialsProvider().apply {
-            setCredentials(
-                AuthScope.ANY,
-                NTCredentials(httpClientProperties.username, httpClientProperties.password, null, null)
-            )
-        }
+        BasicCredentialsProvider()
 
     @Bean
     fun ntlmHttpClient(credentialsProvider: CredentialsProvider): CloseableHttpClient {
@@ -41,13 +29,13 @@ class NtlmHttpClientConfig(
 
         return HttpClientBuilder.create()
             .setDefaultRequestConfig(requestConfig)
-            .setDefaultCredentialsProvider(credentialsProvider)
+            // Не устанавливаем credentials provider, чтобы избежать NTLM
             .build()
     }
 
     @Bean
     fun httpClientContext(credentialsProvider: CredentialsProvider): HttpClientContext =
-        HttpClientContext.create().apply { this.credentialsProvider = credentialsProvider }
+        HttpClientContext.create()
 
     @Bean
     fun targetHost(): HttpHost {

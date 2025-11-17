@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS shedlock
+CREATE TABLE IF NOT EXISTS cep.shedlock
 (
     name       VARCHAR(64)  NOT NULL,
     lock_until TIMESTAMP    NOT NULL,
@@ -7,8 +7,8 @@ CREATE TABLE IF NOT EXISTS shedlock
     PRIMARY KEY (name)
 );
 
-COMMENT ON TABLE shedlock IS 'Таблица для координации блокировок ShedLock в кластере';
-COMMENT ON COLUMN shedlock.name IS 'Имя блокировки (имя scheduled задачи)';
-COMMENT ON COLUMN shedlock.lock_until IS 'Время до которого блокировка действительна';
-COMMENT ON COLUMN shedlock.locked_at IS 'Время получения блокировки';
-COMMENT ON COLUMN shedlock.locked_by IS 'Идентификатор узла, который получил блокировку';
+COMMENT ON TABLE cep.shedlock IS 'Таблица для координации блокировок ShedLock в кластере';
+COMMENT ON COLUMN cep.shedlock.name IS 'Имя блокировки (имя scheduled задачи)';
+COMMENT ON COLUMN cep.shedlock.lock_until IS 'Время до которого блокировка действительна';
+COMMENT ON COLUMN cep.shedlock.locked_at IS 'Время получения блокировки';
+COMMENT ON COLUMN cep.shedlock.locked_by IS 'Идентификатор узла, который получил блокировку';

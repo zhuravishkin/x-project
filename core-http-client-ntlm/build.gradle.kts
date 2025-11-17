@@ -31,11 +31,7 @@ dependencies {
     implementation("org.postgresql:postgresql")
     implementation("org.flywaydb:flyway-core")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
-
-//    implementation("org.apache.httpcomponents.client5:httpclient5:5.3.1")
-//    implementation("org.apache.httpcomponents.core5:httpcore5:5.2.4")
     implementation("org.apache.httpcomponents:httpclient:4.5.14")
-
     implementation("net.javacrumbs.shedlock:shedlock-spring:6.9.0")
     implementation("net.javacrumbs.shedlock:shedlock-provider-jdbc-template:6.9.0")
     runtimeOnly("com.h2database:h2")
@@ -44,6 +40,9 @@ dependencies {
     annotationProcessor("org.projectlombok:lombok")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
+    testImplementation("org.testcontainers:junit-jupiter")
+    testImplementation("org.testcontainers:postgresql")
+    testImplementation("org.wiremock:wiremock-standalone:3.13.2")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 

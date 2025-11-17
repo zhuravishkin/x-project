@@ -1,0 +1,6 @@
+x:
+  client:
+    url: http://localhost:8080
+    path: /process
+    connect-timeout-seconds: 5
+    read-timeout: 5
