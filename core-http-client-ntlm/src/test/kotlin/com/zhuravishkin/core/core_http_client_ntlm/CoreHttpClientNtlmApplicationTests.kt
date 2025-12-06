@@ -1,9 +1,9 @@
 package com.zhuravishkin.core.core_http_client_ntlm
 
-import com.zhuravishkin.core.core_http_client_ntlm.configuration.HttpClientConfig
+import com.github.tomakehurst.wiremock.WireMockServer
+import com.github.tomakehurst.wiremock.core.WireMockConfiguration
 import jakarta.transaction.Transactional
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.context.annotation.Import
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.DynamicPropertyRegistry
 import org.springframework.test.context.DynamicPropertySource
@@ -15,7 +15,7 @@ import org.testcontainers.junit.jupiter.Testcontainers
     classes = [CoreHttpClientNtlmApplication::class],
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
 )
-@Import(HttpClientConfig::class)
+//@Import(HttpClientConfig::class)
 @Testcontainers
 @Transactional
 @ActiveProfiles(profiles = ["test"])
@@ -28,12 +28,19 @@ class CoreHttpClientNtlmApplicationTests {
             withPassword("test")
         }
 
+        val wireMockServer = WireMockServer(
+            WireMockConfiguration.options()
+                .dynamicPort()
+        ).apply { start() }
+
         @JvmStatic
         @DynamicPropertySource
         fun configureProperties(registry: DynamicPropertyRegistry) {
             registry.add("spring.datasource.url", postgres::getJdbcUrl)
             registry.add("spring.datasource.username", postgres::getUsername)
             registry.add("spring.datasource.password", postgres::getPassword)
+
+            registry.add("x.client.url") { "http://localhost:${wireMockServer.port()}" }
         }
     }
 }

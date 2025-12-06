@@ -1,8 +1,6 @@
 package com.zhuravishkin.core.core_http_client_ntlm.service
 
-import com.github.tomakehurst.wiremock.WireMockServer
 import com.github.tomakehurst.wiremock.client.WireMock.*
-import com.github.tomakehurst.wiremock.core.WireMockConfiguration
 import com.zhuravishkin.core.core_http_client_ntlm.CoreHttpClientNtlmApplicationTests
 import com.zhuravishkin.core.core_http_client_ntlm.domain.RecordStatus
 import com.zhuravishkin.core.core_http_client_ntlm.domain.entity.RecordEntity
@@ -10,8 +8,6 @@ import com.zhuravishkin.core.core_http_client_ntlm.repository.RecordRepository
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.test.context.DynamicPropertyRegistry
-import org.springframework.test.context.DynamicPropertySource
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
@@ -21,26 +17,6 @@ class ProcessRecordsServiceTest : CoreHttpClientNtlmApplicationTests() {
 
     @Autowired
     private lateinit var recordRepository: RecordRepository
-
-    private val wireMockServer: WireMockServer
-        get() = ProcessRecordsServiceTest.wireMockServer
-
-    companion object {
-        val wireMockServer = WireMockServer(
-            WireMockConfiguration.options()
-                .dynamicPort()
-        )
-
-        init {
-            wireMockServer.start()
-        }
-
-        @JvmStatic
-        @DynamicPropertySource
-        fun configureProperties(registry: DynamicPropertyRegistry) {
-            registry.add("x.client.url") { "http://localhost:${wireMockServer.port()}" }
-        }
-    }
 
     @BeforeEach
     fun setUp() {
