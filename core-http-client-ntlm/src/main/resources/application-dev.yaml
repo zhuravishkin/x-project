@@ -1,0 +1,19 @@
+spring:
+  datasource:
+    username: ${DB_USERNAME:user}
+    password: ${DB_PASSWORD:password}
+x:
+  client:
+    username: ${HTTP_CLIENT_USERNAME:user}
+    password: ${HTTP_CLIENT_PASSWORD:password}
+  scheduler:
+    spca:
+      cron: ${SCHEDULER_CRON:30 * * * * *}
+logging:
+  level:
+    root: INFO
+    com.zhuravishkin.core: DEBUG
+    org.springframework.scheduling: DEBUG
+    net.javacrumbs.shedlock: DEBUG
+server:
+  port: 8081

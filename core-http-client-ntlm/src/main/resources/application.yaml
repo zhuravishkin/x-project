@@ -4,8 +4,8 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/postgres
     driver-class-name: org.postgresql.Driver
-    username: user
-    password: password
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
   jpa:
     hibernate:
       ddl-auto: validate
@@ -23,18 +23,10 @@ x:
   client:
     url: ${EXTERNAL_SERVICE_URL:http://localhost:8080}
     path: ${HTTP_CLIENT_DOMAIN:/process}
-    username: ${HTTP_CLIENT_USERNAME:user}
-    password: ${HTTP_CLIENT_PASSWORD:password}
+    username: ${HTTP_CLIENT_USERNAME}
+    password: ${HTTP_CLIENT_PASSWORD}
     connect-timeout-seconds: 30
     read-timeout: 20
   scheduler:
     spca:
       cron: ${SCHEDULER_CRON:30 * * * * *}
-logging:
-  level:
-    root: INFO
-    com.zhuravishkin.core: DEBUG
-    org.springframework.scheduling: DEBUG
-    net.javacrumbs.shedlock: DEBUG
-server:
-  port: 8081

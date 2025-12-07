@@ -18,7 +18,7 @@ import org.testcontainers.junit.jupiter.Testcontainers
 //@Import(HttpClientConfig::class)
 @Testcontainers
 @Transactional
-@ActiveProfiles(profiles = ["test"])
+@ActiveProfiles(profiles = ["dev", "test"])
 class CoreHttpClientNtlmApplicationTests {
     companion object {
         @Container

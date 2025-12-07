@@ -44,7 +44,7 @@ class ProcessRecordsServiceTest : CoreHttpClientNtlmApplicationTests() {
         )
 
         // When
-        val processedCount = processRecordsService.execute()
+        val processedCount = processRecordsService.sendRecord()
 
         // Then
         assertEquals(1, processedCount)

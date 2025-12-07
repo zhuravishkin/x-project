@@ -6,6 +6,7 @@ plugins {
     kotlin("plugin.jpa")
     id("org.springframework.boot")
     id("io.spring.dependency-management")
+    id("jacoco")
 }
 
 group = "com.zhuravishkin.core"
@@ -37,7 +38,6 @@ dependencies {
     runtimeOnly("com.h2database:h2")
     runtimeOnly("io.micrometer:micrometer-registry-prometheus")
     runtimeOnly("org.flywaydb:flyway-database-postgresql")
-    annotationProcessor("org.projectlombok:lombok")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
     testImplementation("org.testcontainers:junit-jupiter")
@@ -79,4 +79,50 @@ detekt {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+jacoco {
+    toolVersion = "0.8.12"
+}
+
+tasks.jacocoTestReport {
+    reports {
+        csv.required.set(false)
+        xml.required.set(true)
+        html.required.set(true)
+    }
+
+    classDirectories.initJacocoExcludes()
+
+    val test: Test by tasks
+    dependsOn(test)
+    finalizedBy(tasks.jacocoTestCoverageVerification)
+}
+
+tasks.jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            limit {
+                counter = "LINE"
+                minimum = BigDecimal(0.75)
+            }
+            limit {
+                counter = "BRANCH"
+                minimum = BigDecimal(0.15)
+            }
+        }
+    }
+
+    classDirectories.initJacocoExcludes("**/repository/**")
+}
+
+private fun ConfigurableFileCollection.initJacocoExcludes(vararg additionalExcludes: String) {
+    val excludes = listOf(
+        "**/*ApplicationKt*"
+    ) + additionalExcludes.toList()
+    this.setFrom(
+        sourceSets.main.get().output.asFileTree.matching {
+            exclude(excludes)
+        }
+    )
 }
