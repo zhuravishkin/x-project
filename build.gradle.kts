@@ -18,6 +18,25 @@ subprojects {
 
     apply(plugin = "io.gitlab.arturbosch.detekt")
 
+    configure<io.gitlab.arturbosch.detekt.extensions.DetektExtension> {
+        config.setFrom(
+            files(
+                "$rootDir/detekt-config.yml",
+                "$projectDir/detekt-config.yml"
+            )
+        )
+        buildUponDefaultConfig = true
+        parallel = true
+    }
+
+    tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
+        reports {
+            html.required.set(true)
+            xml.required.set(false)
+            txt.required.set(false)
+        }
+    }
+
     pluginManager.withPlugin("org.jetbrains.kotlin.jvm") {
         configure<JavaPluginExtension> {
             toolchain {
@@ -34,6 +53,5 @@ subprojects {
 
     tasks.withType<Test> {
         useJUnitPlatform()
-        enabled = false
     }
 }

@@ -1,5 +1,3 @@
-import io.gitlab.arturbosch.detekt.Detekt
-
 plugins {
     alias(libs.plugins.kotlin.jvm)
     alias(libs.plugins.kotlin.spring)
@@ -40,23 +38,8 @@ allOpen {
     annotation("jakarta.persistence.Embeddable")
 }
 
-detekt {
-    config.setFrom(
-        files(
-            "$rootDir/detekt-config.yml",
-            "$projectDir/detekt-config.yml"
-        )
-    )
-    buildUponDefaultConfig = true
-    parallel = true
-
-    tasks.withType<Detekt>().configureEach {
-        reports {
-            html.required.set(true)
-            xml.required.set(false)
-            txt.required.set(false)
-        }
-    }
+tasks.withType<Test> {
+    enabled = false
 }
 
 jacoco {
