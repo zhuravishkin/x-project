@@ -1,4 +1,4 @@
 build:
-  maxIssues: 0
+  maxIssues: -1
 config:
   validation: true

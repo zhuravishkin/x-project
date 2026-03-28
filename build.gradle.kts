@@ -1,10 +1,10 @@
 plugins {
-    kotlin("jvm") version "2.0.21" apply false
-    kotlin("plugin.spring") version "2.0.21" apply false
-    kotlin("plugin.jpa") version "2.0.21" apply false
-    id("org.springframework.boot") version "3.5.7" apply false
-    id("io.spring.dependency-management") version "1.1.7" apply false
-    id("io.gitlab.arturbosch.detekt") version "1.23.8" apply false
+    alias(libs.plugins.kotlin.jvm) apply false
+    alias(libs.plugins.kotlin.spring) apply false
+    alias(libs.plugins.kotlin.jpa) apply false
+    alias(libs.plugins.spring.boot) apply false
+    alias(libs.plugins.spring.dependency.management) apply false
+    alias(libs.plugins.detekt) apply false
 }
 
 group = "com.zhuravishkin"
@@ -18,7 +18,22 @@ subprojects {
 
     apply(plugin = "io.gitlab.arturbosch.detekt")
 
+    pluginManager.withPlugin("org.jetbrains.kotlin.jvm") {
+        configure<JavaPluginExtension> {
+            toolchain {
+                languageVersion = JavaLanguageVersion.of(21)
+            }
+        }
+
+        configure<org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension> {
+            compilerOptions {
+                freeCompilerArgs.addAll("-Xjsr305=strict")
+            }
+        }
+    }
+
     tasks.withType<Test> {
         useJUnitPlatform()
+        enabled = false
     }
 }

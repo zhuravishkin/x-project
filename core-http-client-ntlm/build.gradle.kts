@@ -1,28 +1,16 @@
 import io.gitlab.arturbosch.detekt.Detekt
 
 plugins {
-    kotlin("jvm")
-    kotlin("plugin.spring")
-    kotlin("plugin.jpa")
-    id("org.springframework.boot")
-    id("io.spring.dependency-management")
+    alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.kotlin.spring)
+    alias(libs.plugins.kotlin.jpa)
+    alias(libs.plugins.spring.boot)
+    alias(libs.plugins.spring.dependency.management)
     id("jacoco")
 }
 
 group = "com.zhuravishkin.core"
 version = "0.0.1"
-
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
-    }
-}
-
-configurations {
-    compileOnly {
-        extendsFrom(configurations.annotationProcessor.get())
-    }
-}
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-actuator")
@@ -32,9 +20,9 @@ dependencies {
     implementation("org.postgresql:postgresql")
     implementation("org.flywaydb:flyway-core")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
-    implementation("org.apache.httpcomponents:httpclient:4.5.14")
-    implementation("net.javacrumbs.shedlock:shedlock-spring:6.9.0")
-    implementation("net.javacrumbs.shedlock:shedlock-provider-jdbc-template:6.9.0")
+    implementation(libs.apache.httpclient)
+    implementation(libs.shedlock.spring)
+    implementation(libs.shedlock.jdbc)
     runtimeOnly("com.h2database:h2")
     runtimeOnly("io.micrometer:micrometer-registry-prometheus")
     runtimeOnly("org.flywaydb:flyway-database-postgresql")
@@ -42,14 +30,8 @@ dependencies {
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
     testImplementation("org.testcontainers:junit-jupiter")
     testImplementation("org.testcontainers:postgresql")
-    testImplementation("org.wiremock:wiremock-standalone:3.13.2")
+    testImplementation(libs.wiremock)
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-}
-
-kotlin {
-    compilerOptions {
-        freeCompilerArgs.addAll("-Xjsr305=strict")
-    }
 }
 
 allOpen {
@@ -77,12 +59,8 @@ detekt {
     }
 }
 
-tasks.withType<Test> {
-    useJUnitPlatform()
-}
-
 jacoco {
-    toolVersion = "0.8.12"
+    toolVersion = libs.versions.jacoco.get()
 }
 
 tasks.jacocoTestReport {
